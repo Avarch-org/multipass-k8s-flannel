@@ -74,7 +74,7 @@ done
 
 
  multipass exec master -- bash <<EOF
-    sudo kubeadm init --control-plane-endpoint=master.k.net --pod-network-cidr=10.96.0.0/12
+    sudo kubeadm init --control-plane-endpoint=master.k.net
     mkdir -p /home/ubuntu/.kube
     sudo cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
     sudo chown $(id -u):$(id -g) /home/ubuntu/.kube/config

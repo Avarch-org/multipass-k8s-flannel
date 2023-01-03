@@ -33,12 +33,6 @@ do
     echo "${masterIP}  master.k.net    master" | sudo tee -a /etc/hosts
     echo "${node1IP}  node1.k.net    node1" | sudo tee -a /etc/hosts
     echo "${node2IP}  node2.k.net    node2" | sudo tee -a /etc/hosts
-    sudo mkdir -p /run/flannel
-    sudo touch /run/flannel/subnet.env
-    echo "FLANNEL_NETWORK=10.96.0.0/12" | sudo tee -a /run/flannel/subnet.env
-    echo "FLANNEL_SUBNET=10.96.0.1/24" | sudo tee -a /run/flannel/subnet.env
-    echo "FLANNEL_MTU=1450" | sudo tee -a /run/flannel/subnet.env
-    echo "FLANNEL_IPMASQ=true" | sudo tee -a /run/flannel/subnet.env
     sudo swapoff -a
     sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
     sudo tee /etc/modules-load.d/containerd.conf <<INTERNAL
@@ -74,7 +68,7 @@ done
 
 
  multipass exec master -- bash <<EOF
-    sudo kubeadm init --control-plane-endpoint=master.k.net --pod-network-cidr=10.96.0.0/12
+    sudo kubeadm init --control-plane-endpoint=master.k.net --pod-network-cidr=10.244.0.0/16
     mkdir -p /home/ubuntu/.kube
     sudo cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
     sudo chown $(id -u):$(id -g) /home/ubuntu/.kube/config
